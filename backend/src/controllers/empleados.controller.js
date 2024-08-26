@@ -5,8 +5,7 @@ import sql from 'mssql';
 export const getEmpleados = async (req, res) => {
     try {
         const empleados = await ListarEmpleadosRepo();
-        res.status(200).json(
-            {empleados});
+        res.status(200).json(empleados);
     } catch (error) {
         res.status(500).json({msg: 'Internal Server Error'});
     }

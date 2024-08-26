@@ -3,9 +3,9 @@ import { createNewEmpleado, getEmpleados } from "../controllers/empleados.contro
 
 const router = Router();
 
-router.get('/empleados', getEmpleados);
+router.get('/ListarEmpleados', getEmpleados);
 
-router.post('/empleados', createNewEmpleado);
+router.post('/InsertarEmpleado', createNewEmpleado);
 
 
 export default router;
