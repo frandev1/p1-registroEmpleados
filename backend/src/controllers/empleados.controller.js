@@ -13,18 +13,18 @@ export const getEmpleados = async (req, res) => {
 
 export const createNewEmpleado = async (req, res) => {
     try {
-        const {nombre, salario} = req.body;
-        if(nombre == null || salario == null){
+        const {Nombre, Salario} = req.body;
+        if(Nombre == null || Salario == null){
             return res.status(400).json({msg: 'Bad Request. Please fill all fields'});
         }
 
-        console.log(nombre, salario);
+        console.log(Nombre, Salario);
         
     
         const pool = await getConnection();
         const result = await pool.request()
-        .input('inNombre', sql.VarChar, nombre)
-        .input('inSalario', sql.Money, salario)
+        .input('inNombre', sql.VarChar, Nombre)
+        .input('inSalario', sql.Money, Salario)
         .output('OutResultCode', sql.Int,0)
         .execute('dbo.InsertarEmpleado');
         

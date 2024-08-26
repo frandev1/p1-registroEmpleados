@@ -63,18 +63,54 @@ function App() {
   }
 
   const InsertarEmpleado = async (parametros, url) => {
-    await axios.post(url)
+    await axios.post(
+      url,
+      {
+        Nombre: parametros.Nombre,
+        Salario: parametros.Salario
+      },
+      {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      }
+    ).then(function(respuesta){
+      console.log(respuesta.statusText);
+      var tipo;
+      var msj = respuesta.data.msg;
+      if(respuesta.statusText === 'OK'){
+          tipo = 'success';
+          show_alerta(msj, tipo);
+          getEmpleados();
+          document.getElementById('btnCerrar').click();
+      } 
+    }).catch(function(error){
+      var msj = error.response.msg;
+      if(error.response.status === 400){
+          show_alerta(msj,'warning');
+      }
+      else if(error.response.status === 401){
+          show_alerta(msj,'warning');
+      }
+      else{
+          show_alerta(msj,'error');
+          console.log(error);
+      }
+    })
   }
 
   return (
     <>
       <div className='App'>
+        <center>
+          <h1>Lista de Empleados</h1>
+        </center>
         <div className='container-fluid'>
         <div className='row mt-3'>
             <div className='col-md-4 offset-md-4'>
               <div className='d-grid mx-auto'>
                 <button onClick={()=> openModal(1)} className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalEmpleados'>
-                  <i className='fa-solid fa-circle-plus'></i>Añadir
+                  <i className='fa-solid fa-circle-plus'></i> Añadir
                 </button>
               </div>
             </div>
@@ -106,7 +142,7 @@ function App() {
             <div className='modal-content'>
               <div className='modal-header'>
                 <label className='h5'>{title}</label>
-                <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                <button type='button' className='btn-close' id='btnCerrar' data-bs-dismiss='modal' aria-label='Close'></button>
               </div>
               <div className='modal-body'>
                 <input type='hidden' id='id'></input>
@@ -121,8 +157,8 @@ function App() {
                   onChange={(e) => setSalario(e.target.value)}></input>
                 </div>
                 <div className='d-grid col-6 mx-auto'>
-                  <button className='btn btn-success'>
-                    <i className='fa-solid fa-floppy-disk'></i>Guardar
+                  <button onClick={() => validar()} className='btn btn-success'>
+                    <i className='fa-solid fa-floppy-disk'></i> Guardar
                   </button>
                 </div>
               </div>
