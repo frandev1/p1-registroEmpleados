@@ -85,7 +85,7 @@ function App() {
           document.getElementById('btnCerrar').click();
       } 
     }).catch(function(error){
-      var msj = error.response.msg;
+      var msj = error.response.data.msg;
       if(error.response.status === 400){
           show_alerta(msj,'warning');
       }
